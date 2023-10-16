@@ -3,6 +3,8 @@ from tkinter import *
 from tkinter import messagebox
 import base64
 
+from GUI2 import show_UI
+
 
 # Create/Connect Database
 def welcome_scr():
@@ -75,7 +77,9 @@ def check_login(username_input, password_input):
         else:
             message = f'Login Successful. Welcome {returned_fname} {returned_lname}'
             messagebox.showinfo("showinfo", message)
-            welcome_scr()
+            # welcome_scr()
+            show_UI(returned_fname, returned_lname)
+
     return valid_login, returned_fname, returned_lname
 
 
@@ -123,7 +127,7 @@ def signin_screen():
     user_entry = Entry(root, textvariable=e1)
     user_entry.grid(row=0, column=1)
 
-    password_entry = Entry(root, textvariable=e2)
+    password_entry = Entry(root, show='*', textvariable=e2)
     password_entry.grid(row=1, column=1)
 
     # Add Button Widgets
@@ -175,7 +179,7 @@ def signup_screen():
     user_entry = Entry(root, textvariable=e3)
     user_entry.grid(row=2, column=1)
 
-    password_entry = Entry(root, textvariable=e4)
+    password_entry = Entry(root, show='*', textvariable=e4)
     password_entry.grid(row=3, column=1)
 
     # Add Button Widgets
@@ -198,32 +202,8 @@ mycursor = mydb.cursor()
 connect_table(mycursor)
 signin_screen()
 
-# Encode/Decode Function
-
-# def encrypt(password):
-#   password_bytes = password.encode("ascii")
-
-#   base64_bytes = base64.b64encode(password_bytes)
-#   base64_string = base64_bytes.decode("ascii")
-
-#   return base64_string
-# def decrypt(password_enc):
-#   password_enc = password_enc.encode("ascii")
-
-#   sample_string_bytes = base64.b64decode(password_enc)
-#   password_normal = sample_string_bytes.decode("ascii")
-
-#   return password_normal
 
 
-# Function to add input from user into Table
-# def create_user(f_name,l_name,username,password):
-#   password_hash=encrypt(password)
-#   insert_stmt = """INSERT INTO users
-#   (first_name, last_name, username, password, password_hashed)
-#   VALUES ('{}', '{}', '{}', '{}', '{}')""".format(f_name, l_name, username, password, password_hash)
-#   mycursor.execute(insert_stmt)
-#   return
 
 
 # Add Data

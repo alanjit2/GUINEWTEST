@@ -1,16 +1,15 @@
 import sqlite3
 from tkinter import *
-import base64
 from tkinter import messagebox
+import base64
 
-# from cryptography.fernet import Fernet
-# # key = Fernet.generate_key() #this is your emcryption key
-# key = b'tET6ttrvB_QNhCInCgCI9p7-jbs25MR15QnFq4E2WNI='
 
 # Create/Connect Database
 def welcome_scr():
     pass
 
+
+# Creates table if it doesn't exist
 def connect_table(mycursor):
     mycursor.execute("""CREATE TABLE IF NOT EXISTS users(
       userid INTEGER PRIMARY KEY, 
@@ -24,6 +23,7 @@ def connect_table(mycursor):
     return
 
 
+# Adds User to DB
 def create_user(f_name, l_name, username, password):
     try:
         password_hash = encrypt(password)
@@ -50,7 +50,7 @@ def create_user(f_name, l_name, username, password):
     except:
         messagebox.showerror("showerror", "Username is already in Use")
 
-
+# Checks if username and password match
 def check_login(username_input, password_input):
     valid_login = 0
     returned_fname = None
@@ -60,7 +60,6 @@ def check_login(username_input, password_input):
     WHERE username = '{}' AND password = '{}'
     '''.format(username_input, password_input_hashed)
 
-    print(sql_statement)
     mycursor.execute(sql_statement)
     while 1:
         row = mycursor.fetchone()
@@ -70,10 +69,6 @@ def check_login(username_input, password_input):
         valid_login = len(row)
         returned_fname = row[0]
         returned_lname = row[1]
-        print(row[0])
-        print(row[1])
-        # if row[0] == 1:
-        #     valid_login = 1
         if len(row) == 0:
             messagebox.showinfo("showinfo", "Username or Password Incorrect")
             return
@@ -83,6 +78,8 @@ def check_login(username_input, password_input):
             welcome_scr()
     return valid_login, returned_fname, returned_lname
 
+
+#Encrypts/decrypts password using base64 format
 def encrypt(password):
     password_bytes = password.encode("ascii")
 
@@ -101,6 +98,7 @@ def decrypt(password_enc):
     return password_normal
 
 
+#UI for Login
 def signin_screen():
 
     # create window
@@ -139,6 +137,7 @@ def signin_screen():
     root.mainloop()
 
 
+# UI for account signup
 def signup_screen():
     # create window
     root = Tk()
@@ -191,6 +190,7 @@ def signup_screen():
     root.mainloop()
 
 
+# Main: Creates DB and sets up tkinter screen
 mydb = sqlite3.connect('mydatabase.db')
 
 mycursor = mydb.cursor()
